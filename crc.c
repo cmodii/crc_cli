@@ -8,29 +8,38 @@ void print_binary(unsigned int number)
     putc((number & 1) ? '1' : '0', stdout);
 }
 
-unsigned int crc8(unsigned int* bytes, int n) {
-    int max_iterations = 10;
-    unsigned int crc = *bytes;
-    const unsigned int divisor = 0b100011101;
-    unsigned int offset = 0;
+// simple function to handle a single byte of data
+unsigned int crc8(unsigned int byte) {
+    const unsigned int polynomial = 0x7;
+    unsigned int crc = 0;
+    unsigned int input_stream = byte << 8;
+    unsigned int current_bit = 0;
 
-    for (int i = 0; i < n; i++) {
-        crc <<= 8; // step 1: append n=8 bits to the data
-        while (crc >> 8 != 0b00000000 && max_iterations > 0) { // as long as actual input data isn't zeroed out
-            while (((crc >> (15-offset)) & 1) == 0) {
-                offset += 1;
-            } 
-
-            max_iterations--;
-            crc ^= (divisor << (7 - offset));
+    for (int i = 15; i >= 0; i--) { // iterate through each bit (byte+appended 8 bits)
+        current_bit = (input_stream >> i) & 1;
+        if ((crc & 0x80) != 0) {
+           crc = (unsigned int) (crc << 1) & 0b011111111; // register must be fixed on 8 bits
+           crc = crc | current_bit;
+           crc = (unsigned int) crc ^ polynomial;
+        } else {
+            crc = (unsigned int) (crc << 1) & 0b011111111; // register must be fixed on 8 bits
+            crc = crc | current_bit;
         }
     }
 
     return crc;
 }
 
+unsigned int verify_crc(unsigned int byte) {
+    return crc8(((byte << 4) | crc8(byte))); // invalid for now
+}
+
 int main() {
-    unsigned int bytes[1] = {0b11000010};
-    unsigned int crc = crc8(bytes, 1);
-    print_binary(crc);
+    // e.g: getting the crc of each byte in the input stream "Hello"
+    char bytes[5] = {'H', 'e', 'l', 'l', 'o'};
+    for (int i = 0; i < 5; i++) {
+        printf("[%c] CRC-8 => ", bytes[i]);
+        print_binary(crc8((unsigned int) bytes[i]));
+        printf("\n");
+    }
 }
