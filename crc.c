@@ -38,8 +38,9 @@ int main() {
     // e.g: getting the crc of each byte in the input stream "Hello"
     char bytes[5] = {'H', 'e', 'l', 'l', 'o'};
     for (int i = 0; i < 5; i++) {
-        printf("[%c] CRC-8 => ", bytes[i]);
-        print_binary(crc8((unsigned int) bytes[i]));
+        unsigned int byte_crc = crc8((unsigned int) bytes[i]);
+        printf("[%c] CRC-8 => %X | ", bytes[i], byte_crc);
+        print_binary(byte_crc);
         printf("\n");
     }
 }
