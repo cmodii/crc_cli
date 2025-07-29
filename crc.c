@@ -11,19 +11,13 @@ void print_binary(unsigned int number)
 // simple function to handle a single byte of data
 unsigned int crc8(unsigned int byte) {
     const unsigned int polynomial = 0x7;
-    unsigned int crc = 0;
-    unsigned int input_stream = byte << 8;
-    unsigned int current_bit = 0;
+    unsigned int crc = byte;
 
-    for (int i = 15; i >= 0; i--) { // iterate through each bit (byte+appended 8 bits)
-        current_bit = (input_stream >> i) & 1;
+    for (int i = 0; i < 8; i++) { // iterate through each bit (byte+appended 8 bits)
         if ((crc & 0x80) != 0) {
-           crc = (unsigned int) (crc << 1) & 0b011111111; // register must be fixed on 8 bits
-           crc = crc | current_bit;
-           crc = (unsigned int) crc ^ polynomial;
+           crc = (unsigned int) (crc << 1 & 0xFF) ^ polynomial;
         } else {
-            crc = (unsigned int) (crc << 1) & 0b011111111; // register must be fixed on 8 bits
-            crc = crc | current_bit;
+            crc = (unsigned int) crc << 1 & 0xFF; // register must be fixed on 8 bits
         }
     }
 
