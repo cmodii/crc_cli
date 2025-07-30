@@ -30,7 +30,7 @@ unsigned int crc8(char *bytes) {
 }
 
 int main() {
-    // e.g: getting the crc of each byte in the input stream "Hello"
+    // e.g: getting the crc of each byte in the input stream "Hello, World!"
     char data[] = "Hello, World!";
     unsigned int crc = crc8(data);
 
