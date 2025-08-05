@@ -1,19 +1,20 @@
 #include <stdio.h>
 #include <string.h>
+#include <stdint.h>
 #define CRC8_POLYNOMIAL 0x7
 
-unsigned int CRC8_table[256];
+uint8_t CRC8_table[256];
 
 void calculate_CRC8_table() {
-    unsigned int currCRC;
-    for (unsigned int dividend = 0; dividend < 256; dividend++) {
+    uint8_t currCRC;
+    for (uint8_t dividend = 0; dividend < 255; dividend++) {
         currCRC = dividend;
 
         for (int i = 0; i < 8; i++) {
             if ((currCRC & 0x80) != 0) {
-                currCRC = (unsigned int) ((currCRC << 1) & 0xFF) ^ CRC8_POLYNOMIAL;
+                currCRC = ((currCRC << 1)) ^ CRC8_POLYNOMIAL;
             } else {
-                currCRC = (currCRC & 0xFF) << 1;
+                currCRC = (currCRC) << 1;
             }
         }
 
@@ -29,12 +30,12 @@ void print_binary(unsigned int number)
     putc((number & 1) ? '1' : '0', stdout);
 }
 
-unsigned int crc8(unsigned char *bytes) {
-    unsigned int crc = 0;
+uint8_t crc8(unsigned char *bytes, size_t byte_count) {
+    uint8_t crc = 0;
 
-    for (int i = 0; i < strlen(bytes); i++) {
-        unsigned int data = ((unsigned int) bytes[i]) ^ (crc & 0xFF);
-        crc = CRC8_table[data];
+    printf("%lld", byte_count);
+    for (int i = 0; i < byte_count; i++) {
+        crc = CRC8_table[*(bytes+i) ^ (crc)];
     }
 
     return crc;
@@ -43,10 +44,11 @@ unsigned int crc8(unsigned char *bytes) {
 int main() {
     // e.g: getting the crc of each byte in the input stream "Hello, World!"
     calculate_CRC8_table(); // expensive
+
     unsigned char data[] = "Hello, World!";
-    unsigned int crc = crc8(data);
+    uint8_t crc = crc8(data, sizeof(data));
 
     printf("[Data]: %s\n", data);
-    printf("[CRC]: %X | %d | ", crc, crc);
-    print_binary(crc);
+    printf("[CRC-8]: %X | %d | ", crc, crc);
+    print_binary((unsigned int) crc);
 }

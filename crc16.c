@@ -1,19 +1,20 @@
 #include <stdio.h>
 #include <string.h>
+#include <stdint.h>
 #define CRC16_POLYNOMIAL 0x1021
 
-unsigned int CRC16_table[256];
+uint16_t CRC16_table[256];
 
 void calculate_CRC16_table() {
-    unsigned int currCRC;
-    for (unsigned int dividend = 0; dividend < 256; dividend++) {
-        currCRC = (unsigned int) dividend << 8;
+    uint16_t currCRC;
+    for (uint8_t dividend = 0; dividend < 256; dividend++) {
+        currCRC = (uint16_t) dividend << 8;
 
         for (int i = 0; i < 8; i++) {
             if ((currCRC & 0x8000) != 0) {
-                currCRC = (unsigned int) ((currCRC << 1) & 0xFFFF) ^ CRC16_POLYNOMIAL;
+                currCRC =((currCRC << 1)) ^ CRC16_POLYNOMIAL;
             } else {
-                currCRC = (currCRC << 1) & 0xFFFF;
+                currCRC = (currCRC << 1);
             }
         }
 
@@ -29,12 +30,11 @@ void print_binary(unsigned int number)
     putc((number & 1) ? '1' : '0', stdout);
 }
 
-unsigned int crc16(unsigned char *bytes, size_t byte_count) {
-    unsigned int crc = 0;
+uint16_t crc16(unsigned char *bytes, size_t byte_count) {
+    uint16_t crc = 0;
 
     for (int i = 0; i < byte_count; i++) {
-        unsigned int pos = (unsigned int) (crc >> 8) ^ (bytes[i]);
-        crc = (CRC16_table[pos] ^ (crc << 8 & 0xFFFF));
+        crc = CRC16_table[(crc >> 8) ^ (bytes[i])] ^ (crc << 8);
     }
 
     return crc;
@@ -45,7 +45,7 @@ int main() {
     calculate_CRC16_table(); // expensive
 
     unsigned char data[] = "Hello, World!";
-    unsigned int crc = crc16(data, strlen(data));
+    uint16_t crc = crc16(data, strlen(data));
 
     printf("[Data]: %s\n", data);
     printf("[CRC-16]: %X | %d | ", crc, crc);
