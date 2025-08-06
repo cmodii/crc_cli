@@ -36,7 +36,8 @@ const uint8_t crc_lookup_tab8[256] = {
     0xE6, 0xE1, 0xE8, 0xEF, 0xFA, 0xFD, 0xF4, 0xF3
 };
 
-/*
+/* The CRC algorithm utilized to fill the lookup table for CRC8 calculations
+
 void calculate_CRC8_table() {
     uint8_t currCRC;
     for (uint8_t dividend = 0; dividend < 255; dividend++) {

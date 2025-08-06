@@ -36,7 +36,8 @@ const uint16_t crc_lookup_tab16[256] = {
     0x6E17, 0x7E36, 0x4E55, 0x5E74, 0x2E93, 0x3EB2, 0x0ED1, 0x1EF0
 };
 
-/*
+/* The CRC algorithm utilized to fill the lookup table for CRC16 calculations
+
 void calculate_CRC16_table() {
     uint16_t currCRC;
     for (uint8_t dividend = 0; dividend < 255; dividend++) {
