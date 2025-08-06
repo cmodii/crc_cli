@@ -1,8 +1,6 @@
 #ifndef CRC_CHECKSUM_H
 #define CRC_CHECKSUM_H
 
-#include <stdio.h>
-#include <string.h>
 #include <stdint.h>
 
 #define CRC_8_POLYNOMIAL 0x7
@@ -20,8 +18,8 @@ uint8_t update_crc8(unsigned char crc, unsigned char new_val);
 uint16_t update_crc16(unsigned char crc, unsigned char new_val);
 uint32_t update_crc32(unsigned char crc, unsigned char new_val);
 
-extern uint8_t crc_lookup_tab8[];
-extern uint16_t crc_lookup_tab16[];
-extern uint32_t crc_lookup_tab32[];
+extern const uint8_t crc_lookup_tab8[];
+extern const uint16_t crc_lookup_tab16[];
+extern const uint32_t crc_lookup_tab32[];
 
 #endif

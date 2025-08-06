@@ -1,7 +1,7 @@
-#include "..\include\checksum.h"
+#include "../include/checksum.h"
 #include <stdint.h>
 
-crc_lookup_tab16[256] = {
+const uint16_t crc_lookup_tab16[256] = {
     0x0000, 0x1021, 0x2042, 0x3063, 0x4084, 0x50A5, 0x60C6, 0x70E7,
     0x8108, 0x9129, 0xA14A, 0xB16B, 0xC18C, 0xD1AD, 0xE1CE, 0xF1EF,
     0x1231, 0x0210, 0x3273, 0x2252, 0x52B5, 0x4294, 0x72F7, 0x62D6,
@@ -36,6 +36,7 @@ crc_lookup_tab16[256] = {
     0x6E17, 0x7E36, 0x4E55, 0x5E74, 0x2E93, 0x3EB2, 0x0ED1, 0x1EF0
 };
 
+/*
 void calculate_CRC16_table() {
     uint16_t currCRC;
     for (uint8_t dividend = 0; dividend < 255; dividend++) {
@@ -52,8 +53,9 @@ void calculate_CRC16_table() {
         crc_lookup_tab16[dividend] = currCRC;
     }
 }
+*/
 
-uint16_t crc16(unsigned char *input_str, size_t byte_num) {
+uint16_t crc16(const unsigned char *input_str, size_t byte_num) {
     uint16_t crc = CRC16_START_VALUE;
 
     for (size_t i = 0; i < byte_num; i++) {

@@ -1,7 +1,7 @@
-#include "..\include\checksum.h"
+#include "../include/checksum.h"
 #include <stdint.h> 
 
-crc_lookup_tab8[256] = {
+const uint8_t crc_lookup_tab8[256] = {
     0x00, 0x07, 0x0E, 0x09, 0x1C, 0x1B, 0x12, 0x15,
     0x38, 0x3F, 0x36, 0x31, 0x24, 0x23, 0x2A, 0x2D,
     0x70, 0x77, 0x7E, 0x79, 0x6C, 0x6B, 0x62, 0x65,
@@ -36,7 +36,7 @@ crc_lookup_tab8[256] = {
     0xE6, 0xE1, 0xE8, 0xEF, 0xFA, 0xFD, 0xF4, 0xF3
 };
 
-
+/*
 void calculate_CRC8_table() {
     uint8_t currCRC;
     for (uint8_t dividend = 0; dividend < 255; dividend++) {
@@ -53,8 +53,9 @@ void calculate_CRC8_table() {
         crc_lookup_tab8[dividend] = currCRC;
     }
 }
+*/
 
-uint8_t crc8(unsigned char *input_str, size_t byte_num) {
+uint8_t crc8(const unsigned char *input_str, size_t byte_num) {
     uint8_t crc = CRC8_START_VALUE;
 
     for (size_t i = 0; i < byte_num; i++) {

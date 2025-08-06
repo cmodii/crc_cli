@@ -1,8 +1,9 @@
-#include "..\include\checksum.h"
+#include "../include/checksum.h"
 #include <stdint.h>
 
-crc_lookup_tab32[256];
+const uint32_t crc_lookup_tab32[256];
 
+/*
 void calculate_CRC32_table() {
     unsigned int currCRC;
     for (unsigned int dividend = 0; dividend < 256; dividend++) {
@@ -19,8 +20,9 @@ void calculate_CRC32_table() {
         crc_lookup_tab32[dividend] = currCRC;
     }
 }
+*/
 
-uint32_t crc32(unsigned char *input_str, size_t byte_num) {
+uint32_t crc32(const unsigned char *input_str, size_t byte_num) {
     uint32_t crc = CRC32_START_VALUE;
 
     for (size_t i = 0; i < byte_num; i++) {
